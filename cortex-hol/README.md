@@ -141,7 +141,7 @@ Congratulations! You’ve successfully created your Coalesce trial account.
    
 ![pic8](https://github.com/user-attachments/assets/92b6897b-5b5e-4143-b2ef-c03457d2ca69)
 
-4. Navigate to the [Cortex HOL Data Setup File](https://github.com/Snowflake-Labs/sf-samples/blob/main/samples/tasty_bytes/tb_introduction.sql?_fsi=g5nXkinG) that is hosted on GitHub.
+4. Navigate to the [Cortex HOL Data Setup File](https://github.com/coalesceio/hands-on-labs/blob/main/cortex-hol/setup_guide.sql) that is hosted on GitHub.
 
 
 5. Within GitHub, navigate to the right side and click "Copy raw contents". This will copy all of the required SQL into your clipboard.
