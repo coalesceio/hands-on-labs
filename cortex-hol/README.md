@@ -13,7 +13,7 @@ This entry-level Hands-On Lab exercise is designed to help you master the basics
 
 * A Directed Acyclic Graph (DAG) representing a basic star schema in Snowflake 
 
-## **What you’ll learn** {#what-you’ll-learn}
+## **What you’ll learn** 
 
 * How to navigate the Coalesce interface  
 * How to add data sources to your graph   
@@ -146,15 +146,13 @@ Congratulations! You’ve successfully created your Coalesce trial account.
 
 5. Within GitHub, navigate to the right side and click "Copy raw contents". This will copy all of the required SQL into your clipboard.
 
-   ![][image10]
+   <img width="966" alt="Screenshot 2025-02-07 at 2 30 23 PM" src="https://github.com/user-attachments/assets/91713209-d78d-43b5-8887-eb6a7c5a7d08" />
 
 6. Paste the setup SQL from GitHub into your Snowflake Worksheet. Then click inside the worksheet and select All (*CMD \+ A for Mac or CTRL \+ A for Windows*) and Click "► Run".
 
-   ![][image11]
 
-7. After clicking "► Run" you will see queries begin to execute. These queries will run one after another with the entire worksheet taking around 5 minutes. Upon completion you will see a message that states stating frostbyte\_tasty\_bytes setup is now complete.
+7. After clicking "► Run" you will see queries begin to execute. These queries will run one after another with the entire worksheet taking around 5 minutes. Upon completion you will see a message that states your HOL data setup is now complete.
 
-![][image12]
 
 Once you’ve activated your Coalesce trial account and logged in, you will land in your Projects dashboard. Projects are a useful way of organizing your development work by a specific purpose or team goal, similar to how folders help you organize documents in Google Drive. 
 
