@@ -16,7 +16,9 @@ USE WAREHOUSE demo_build_wh;
 
 -- create file format 
 CREATE OR REPLACE FILE FORMAT cortex_hol.raw_pos.csvformat
-type = 'csv';
+TYPE = 'csv' 
+FIELD_OPTIONALLY_ENCLOSED_BY = '"';
+
 
 -- create stage for cortex hol data
 CREATE OR REPLACE STAGE cortex_hol.raw_pos.s3load
@@ -77,9 +79,30 @@ CREATE OR REPLACE TABLE cortex_hol.raw_pos.order_detail
     order_item_discount_amount VARCHAR(16777216)
 );
 
+
+-- customer loyalty table build
+CREATE OR REPLACE TABLE cortex_hol.raw_pos.customers
+(
+    customer_id NUMBER(38,0),
+    first_name VARCHAR(16777216),
+    last_name VARCHAR(16777216),
+    city VARCHAR(16777216),
+    country VARCHAR(16777216),
+    postal_code VARCHAR(16777216),
+    preferred_language VARCHAR(16777216),
+    gender VARCHAR(16777216),
+    favourite_brand VARCHAR(16777216),
+    marital_status VARCHAR(16777216),
+    children_count VARCHAR(16777216),
+    sign_up_date DATE,
+    birthday_date DATE,
+    e_mail VARCHAR(16777216),
+    phone_number VARCHAR(16777216)
+);
+
 -- review table build
 CREATE OR REPLACE TABLE cortex_hol.raw_pos.reviews (
-    REVIEW_ID STRING DEFAULT UUID_STRING(),
+    REVIEW_ID STRING, 
     CUSTOMER_ID INT,
     STAR_RATING INT,
     REVIEW_TEXT STRING,
@@ -99,6 +122,10 @@ FROM @cortex_hol.raw_pos.s3load/order-header/;
 -- order_detail table load
 COPY INTO cortex_hol.raw_pos.order_detail
 FROM @cortex_hol.raw_pos.s3load/order-detail/;
+
+-- reviews table load
+COPY INTO cortex_hol.raw_pos.customers
+FROM @cortex_hol.raw_pos.s3load/customer/;
 
 -- reviews table load
 COPY INTO cortex_hol.raw_pos.reviews
