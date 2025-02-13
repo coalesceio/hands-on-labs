@@ -1,5 +1,5 @@
 -- setting a role and creating a database and schema for lab data
-USE ROLE SYSADMIN;
+USE ROLE ACCOUNTADMIN;
 CREATE OR REPLACE DATABASE cortex_hol;
 CREATE OR REPLACE SCHEMA raw_pos;
 
@@ -139,6 +139,23 @@ GRANT USAGE ON DATABASE cortex_hol TO ROLE pc_coalesce_role;
 GRANT USAGE ON ALL SCHEMAS IN DATABASE cortex_hol TO ROLE pc_coalesce_role;
 GRANT ALL ON SCHEMA cortex_hol.raw_pos TO ROLE pc_coalesce_role;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA cortex_hol.raw_pos TO ROLE pc_coalesce_role;
+
+CREATE OR REPLACE EXTERNAL VOLUME cortex_iceberg_external_volume
+      STORAGE_LOCATIONS =  
+         (  
+            (  
+               NAME = 'us-east-2'  
+               STORAGE_PROVIDER = 'S3'  
+               STORAGE_BASE_URL = 's3://coalesce-hol-data/cortex-hol-data/'  
+               STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::034362027654:role/cortex-hol-role'  
+               STORAGE_AWS_EXTERNAL_ID = 'cortex-hol'  
+            )  
+         );
+
+CREATE OR REPLACE CATALOG INTEGRATION cortex_iceberg_catalog_integration  
+CATALOG_SOURCE = OBJECT_STORE  
+TABLE_FORMAT = ICEBERG  
+ENABLED = TRUE;
 
 
 -- setup completion note
