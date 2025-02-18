@@ -1,13 +1,27 @@
+CREATE or REPLACE database marketplace_hol;
+CREATE or REPLACE schema marketplace_hol.store;
+
+CREATE OR REPLACE file format marketplace_hol.store.csvformat
+TYPE = 'CSV' 
+FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+SKIP_HEADER = 1;
+
+CREATE or REPLACE file format marketplace_hol.store.jsonformat
+type = 'JSON';
+
+CREATE OR REPLACE STAGE marketplace_hol.store.store_data
+URL = 's3://coalesce-hol-data/marketplace-hol-data/';
+
 -- ORDER TABLE
 CREATE OR REPLACE TABLE orders (
-    order_id INT AUTOINCREMENT PRIMARY KEY,
+    order_id INT  PRIMARY KEY,
+    order_detail_id INT,
     customer_id INT,
     total_amount DECIMAL(10, 2),
-    order_date TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP(),
+    order_ts TIMESTAMP_LTZ,
     status STRING,
-    shipping_address STRING,
-    billing_address STRING,
-    payment_method STRING
+    payment_method STRING,
+    shipping_address STRING
 );
 
 -- ORDER DETAIL TABLE
@@ -18,9 +32,8 @@ CREATE OR REPLACE TABLE order_detail (
     item_name STRING,
     quantity INT,
     price DECIMAL(10, 2),
-    discount_amount DECIMAL(10, 2),
-    line_total DECIMAL(10, 2) AS (quantity * (price - discount_amount)),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    discount_amount DECIMAL(10, 2)
+    
 );
 
 --MENU TABLE 
@@ -35,16 +48,47 @@ CREATE OR REPLACE TABLE menu (
     cost_to_make DECIMAL(10, 2)
 );
 
-
 --REVIEW TABLE
 
 CREATE OR REPLACE TABLE customer_reviews (
     review_id INT AUTOINCREMENT PRIMARY KEY,
     customer_id INT,
     order_id INT,
-    star_rating INT CHECK (star_rating BETWEEN 1 AND 5),
+    star_rating INT,
     review_text STRING,
-    review_date TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP(),
-    FOREIGN KEY (customer_id) REFERENCES orders(customer_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    review_date TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP()
 );
+
+--CUSTOMER TABLE
+
+CREATE OR REPLACE TABLE customers (
+    customer_id INT,
+    first_name STRING NOT NULL,
+    last_name STRING NOT NULL,
+    email STRING UNIQUE NOT NULL,
+    phone_number STRING,
+    date_of_birth DATE,
+    address STRING,
+    city STRING,
+    state STRING,
+    postal_code STRING,
+    country STRING
+);
+
+
+COPY INTO marketplace_hol.store.menu
+FROM @marketplace_hol.store.store_data/menu.csv
+FILE_FORMAT = csvformat;
+
+
+COPY INTO marketplace_hol.store.order_detail
+FROM @marketplace_hol.store.store_data/order_detail.csv
+FILE_FORMAT = csvformat;
+
+COPY INTO marketplace_hol.store.orders
+FROM @marketplace_hol.store.store_data/orders.csv
+FILE_FORMAT = csvformat;
+
+COPY INTO marketplace_hol.store.customers
+FROM @marketplace_hol.store.store_data/customers.csv
+FILE_FORMAT = csvformat;
