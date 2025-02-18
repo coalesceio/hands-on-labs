@@ -1,3 +1,6 @@
+USE ROLE ACCOUNTADMIN;
+CREATE OR REPLACE warehouse compute_wh
+warehouse_size = 'xsmall';
 CREATE or REPLACE database marketplace_hol;
 CREATE or REPLACE schema marketplace_hol.store;
 
