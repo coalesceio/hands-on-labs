@@ -51,17 +51,6 @@ CREATE OR REPLACE TABLE menu (
     cost_to_make DECIMAL(10, 2)
 );
 
---REVIEW TABLE
-
-CREATE OR REPLACE TABLE customer_reviews (
-    review_id INT AUTOINCREMENT PRIMARY KEY,
-    customer_id INT,
-    order_id INT,
-    star_rating INT,
-    review_text STRING,
-    review_date TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP()
-);
-
 --CUSTOMER TABLE
 
 CREATE OR REPLACE TABLE customers (
