@@ -84,3 +84,10 @@ FILE_FORMAT = csvformat;
 COPY INTO marketplace_hol.store.customers
 FROM @marketplace_hol.store.store_data/customers.csv
 FILE_FORMAT = csvformat;
+
+GRANT USAGE ON DATABASE marketplace_hol TO ROLE pc_coalesce_role;
+GRANT USAGE ON SCHEMA marketplace_hol.store TO ROLE pc_coalesce_role;
+GRANT SELECT ON ALL TABLES IN SCHEMA marketplace_hol.store TO ROLE pc_coalesce_role;
+GRANT USAGE ON STAGE marketplace_hol.store.store_data TO ROLE pc_coalesce_role;
+GRANT READ ON STAGE marketplace_hol.store.store_data TO ROLE pc_coalesce_role;
+GRANT USAGE ON FILE FORMAT marketplace_hol.store.jsonformat TO ROLE pc_coalesce_role;
