@@ -85,6 +85,9 @@ COPY INTO marketplace_hol.store.customers
 FROM @marketplace_hol.store.store_data/customers.csv
 FILE_FORMAT = csvformat;
 
+ALTER TABLE marketplace_hol.store.orders set CHANGE_TRACKING=TRUE;
+ALTER TABLE marketplace_hol.store.order_detail set CHANGE_TRACKING=TRUE;
+
 GRANT USAGE ON DATABASE marketplace_hol TO ROLE pc_coalesce_role;
 GRANT USAGE ON SCHEMA marketplace_hol.store TO ROLE pc_coalesce_role;
 GRANT SELECT ON ALL TABLES IN SCHEMA marketplace_hol.store TO ROLE pc_coalesce_role;
