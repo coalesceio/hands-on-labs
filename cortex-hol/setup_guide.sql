@@ -100,6 +100,14 @@ CREATE OR REPLACE TABLE cortex_hol.raw_pos.customers
     phone_number VARCHAR(16777216)
 );
 
+-- review table build
+CREATE OR REPLACE TABLE cortex_hol.raw_pos.reviews (
+    REVIEW_ID STRING, 
+    CUSTOMER_ID INT,
+    STAR_RATING INT,
+    REVIEW_TEXT STRING,
+    REVIEW_DATE DATE
+);
 
 
 -- menu table load
@@ -117,6 +125,9 @@ FROM @cortex_hol.raw_pos.s3load/order-detail/;
 -- reviews table load
 COPY INTO cortex_hol.raw_pos.customers
 FROM @cortex_hol.raw_pos.s3load/customer/;
+
+COPY INTO cortex_hol.raw_pos.reviews
+FROM @cortex_hol.raw_pos.s3load/reviews/;
 
 
 -- remove xlarge warehouse 
