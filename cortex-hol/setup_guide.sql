@@ -1,5 +1,4 @@
 -- setting a role and creating a database and schema for lab data
-USE ROLE ACCOUNTADMIN;
 CREATE OR REPLACE DATABASE cortex_hol;
 CREATE OR REPLACE SCHEMA raw_pos;
 
@@ -109,6 +108,14 @@ CREATE OR REPLACE TABLE cortex_hol.raw_pos.reviews (
     REVIEW_DATE DATE
 );
 
+--new orders table 
+CREATE OR REPLACE TABLE cortex_hol.raw_pos.new_orders (
+    ORDER_TS TIMESTAMP_NTZ,
+    ORDER_AMOUNT NUMBER(12,2),
+    MENU_ITEM_NAME STRING
+);
+
+
 
 -- menu table load
 COPY INTO cortex_hol.raw_pos.menu
@@ -129,6 +136,9 @@ FROM @cortex_hol.raw_pos.s3load/customer/;
 COPY INTO cortex_hol.raw_pos.reviews
 FROM @cortex_hol.raw_pos.s3load/reviews/;
 
+COPY INTO cortex_hol.raw_pos.new_orders
+FROM @cortex_hol.raw_pos.s3load/new_orders/;
+
 
 -- remove xlarge warehouse 
 DROP WAREHOUSE IF EXISTS demo_build_wh;
@@ -139,22 +149,6 @@ GRANT USAGE ON ALL SCHEMAS IN DATABASE cortex_hol TO ROLE pc_coalesce_role;
 GRANT ALL ON SCHEMA cortex_hol.raw_pos TO ROLE pc_coalesce_role;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA cortex_hol.raw_pos TO ROLE pc_coalesce_role;
 
-CREATE OR REPLACE EXTERNAL VOLUME cortex_iceberg_external_volume
-      STORAGE_LOCATIONS =  
-         (  
-            (  
-               NAME = 'us-east-2'  
-               STORAGE_PROVIDER = 'S3'  
-               STORAGE_BASE_URL = 's3://coalesce-hol-data/cortex-hol-data/'  
-               STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::034362027654:role/cortex-hol-role'  
-               STORAGE_AWS_EXTERNAL_ID = 'cortex-hol'  
-            )  
-         );
-
-CREATE OR REPLACE CATALOG INTEGRATION cortex_iceberg_catalog_integration  
-CATALOG_SOURCE = OBJECT_STORE  
-TABLE_FORMAT = ICEBERG  
-ENABLED = TRUE;
 
 
 -- setup completion note
