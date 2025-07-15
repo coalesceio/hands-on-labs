@@ -1,4 +1,5 @@
 -- setting a role and creating a database and schema for lab data
+USE ROLE ACCOUNTADMIN;
 CREATE OR REPLACE DATABASE cortex_hol;
 CREATE OR REPLACE SCHEMA raw_pos;
 
